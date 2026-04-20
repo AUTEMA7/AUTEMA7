@@ -23,9 +23,11 @@ final class Auth
     {
         self::requireAuth();
         $role = $_SESSION['user']['role'] ?? '';
+
         if (!in_array($role, $roles, true)) {
             http_response_code(403);
-            exit('Accès refusé.');
+            require __DIR__ . '/../../views/errors/403.php';
+            exit;
         }
     }
 

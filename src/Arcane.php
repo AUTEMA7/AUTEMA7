@@ -25,7 +25,7 @@ final class Arcane
 
         if (!isset($this->routes[$routeKey])) {
             http_response_code(404);
-            echo 'Route introuvable';
+            require __DIR__ . '/../views/errors/404.php';
             return;
         }
 

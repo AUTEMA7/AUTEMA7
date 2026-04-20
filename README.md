@@ -43,5 +43,6 @@ Les OTP sont simulés et écrits dans `storage_sms.log`.
 
 ## Notes importantes
 
+- Pages système ajoutées: erreurs `403` et `404` pour éviter les écrans blancs en cas de route manquante ou accès interdit.
 - Les intégrations externes (ANIP réel, MoMo/Flooz/C-Cash réel, API pharmacie nationale) sont exposées ici en **simulation** pour permettre le développement sans dépendances réseau externes.
 - Le journal d'audit est append-only côté application, avec empreinte `hash_chain` stockée dans la table `audit_logs`.

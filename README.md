@@ -1,45 +1,47 @@
-# IlaraNet Bénin — MVP (PHP + Tailwind + Alpine + Arcane.php + MySQL)
+# IlaraNet Bénin — Base applicative (PHP + Tailwind + Alpine + Arcane.php + MySQL)
 
-Ce dépôt contient une base fonctionnelle pour démarrer l'application IlaraNet Bénin avec :
+Cette version ajoute les fondations demandées :
 
-- **PHP** (backend)
-- **Arcane.php** (micro-noyau de routing maison `src/Arcane.php`)
-- **MySQL** (persistance)
-- **Tailwind CSS** (UI)
-- **Alpine.js** (interactions frontend)
+- RBAC 3 niveaux (Direction / Chef / Personnel)
+- 2FA OTP SMS (simulation locale)
+- Modules: Urgences, Hospitalisation, Laboratoire, Pharmacie API
+- Journal d'audit immuable (hash chain + horodatage WAT)
+- Intégrations ANIP NPI + paiements mobiles (MoMo/Flooz/C-Cash) en mode simulation
 
-## Fonctionnalités incluses (MVP)
+## Stack
 
-- Page de connexion (compte démo)
-- Tableau de bord directeur
-- Enregistrement de patients (NPI, nom, téléphone)
-- Liste des patients
+- Backend: PHP (routing Arcane)
+- Frontend: Tailwind CSS + Alpine.js
+- Base de données: MySQL
 
-## Lancer le projet
+## Installation
 
-1. Copier l'environnement :
-   ```bash
-   cp .env.example .env
-   ```
-2. Créer la base :
-   ```bash
-   mysql -u root -p < database/schema.sql
-   ```
-3. Lancer le serveur PHP :
-   ```bash
-   php -S 127.0.0.1:8000 -t public
-   ```
-4. Ouvrir : `http://127.0.0.1:8000`
+```bash
+cp .env.example .env
+mysql -u root -p < database/schema.sql
+php -S 127.0.0.1:8000 -t public
+```
 
-### Compte démo
+## Comptes de démo (mot de passe: `password`)
 
-- **Email**: `admin@ilaranet.bj`
-- **Mot de passe**: `admin123`
+- Directeur: `directeur@ilaranet.bj`
+- Chef de service: `chef@ilaranet.bj`
+- Personnel: `staff@ilaranet.bj`
+- Code service (chef/personnel): `123456`
 
-## Prochaines étapes recommandées
+## OTP SMS
 
-- Ajouter RBAC 3 niveaux (Direction / Chef / Personnel)
-- Ajouter 2FA OTP SMS
-- Modules Urgence, Hospitalisation, Laboratoire, Pharmacie API
-- Journal d'audit immuable
-- Intégration ANIP NPI et paiements mobiles (MoMo/Flooz/C-Cash)
+Les OTP sont simulés et écrits dans `storage_sms.log`.
+
+## Routes principales
+
+- Auth: `/`, `/login`, `/otp`, `/service-access`, `/logout`
+- Dashboard: `/dashboard`
+- Patients + ANIP: `/patients`, `/integrations/anip/verify`
+- Paiements mobile: `/payments/mobile`
+- Modules: `/modules/emergency`, `/modules/hospitalization`, `/modules/lab`, `/modules/pharmacy`
+
+## Notes importantes
+
+- Les intégrations externes (ANIP réel, MoMo/Flooz/C-Cash réel, API pharmacie nationale) sont exposées ici en **simulation** pour permettre le développement sans dépendances réseau externes.
+- Le journal d'audit est append-only côté application, avec empreinte `hash_chain` stockée dans la table `audit_logs`.
